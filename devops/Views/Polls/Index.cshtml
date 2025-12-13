@@ -1,38 +1,73 @@
-@model DevOpsPollApp.Models.PollVoteViewModel
+@model DevOpsPollApp.ViewModels.PollIndexViewModel
 @{
-    ViewData["Title"] = "Опрос";
+    ViewData["Title"] = "Опросы";
+    var baseUrl = $"{Context.Request.Scheme}://{Context.Request.Host}";
 }
 
 <div class="page-center">
-    <div class="card">
+    <div class="card" style="width:min(900px, 100%);">
         <div class="card-header">
-            <h2 class="card-title center-text">@Model.Poll.Question</h2>
-            <p class="card-subtitle center-text">Выберите один вариант и отправьте голос.</p>
+            <h2 class="card-title center-text">Опросы</h2>
+            <p class="card-subtitle center-text">Создавай опрос, получай ссылку и собирай голоса.</p>
         </div>
         <hr class="divider" />
         <div class="card-body">
-            <form id="voteForm" asp-action="Vote" asp-controller="Polls" method="post">
-                <input type="hidden" id="hiddenUserName" name="UserName" value="@Model.UserName" />
+            <div class="actions" style="margin-top:0; justify-content:center;">
+                <a class="btn btn-primary" asp-action="Create" asp-controller="Polls">Создать опрос</a>
+            </div>
 
-                <div class="stack">
-                    @foreach (var option in Model.Poll.Options)
-                    {
-                        <label class="option" for="option-@option.Id">
-                            <input type="radio" name="SelectedOptionId" id="option-@option.Id" value="@option.Id" />
-                            <div>
-                                <div class="option-title">@option.Text</div>
-                                <div class="option-meta">нажмите, чтобы выбрать</div>
-                            </div>
-                        </label>
-                    }
-                </div>
+            <div style="height:16px;"></div>
 
-                <div class="actions">
-                    <button class="btn btn-primary" type="submit">Голосовать</button>
-                    <a class="btn btn-ghost" asp-action="Results" asp-controller="Polls">Результаты</a>
-                    <a class="btn btn-ghost" asp-controller="Home" asp-action="Index">Сменить имя</a>
-                </div>
-            </form>
+            @if (Model.Polls.Count == 0)
+            {
+                <div class="center-text" style="color: rgba(255,255,255,.75);">Пока нет ни одного опроса.</div>
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Голоса</th>
+                            <th>Ссылки</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model.Polls)
+                        {
+                            var voteUrl = $"{baseUrl}/p/{p.PublicId}";
+                            var resultsUrl = $"{baseUrl}/p/{p.PublicId}/results";
+                            <tr>
+                                <td style="font-weight:900;">@p.Title</td>
+                                <td>@p.TotalVotes</td>
+                                <td style="white-space:nowrap;">
+                                    <a class="nav-link" href="@voteUrl">Опрос</a>
+                                    <a class="nav-link" href="@resultsUrl">Результаты</a>
+                                    <button class="btn btn-ghost" type="button" data-copy="@voteUrl" style="padding:9px 12px;">Копировать</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("click", async (e) => {
+          const btn = e.target.closest("[data-copy]");
+          if (!btn) return;
+          const text = btn.getAttribute("data-copy");
+          try {
+            await navigator.clipboard.writeText(text);
+            const old = btn.textContent;
+            btn.textContent = "Скопировано";
+            setTimeout(() => btn.textContent = old, 900);
+          } catch {
+            prompt("Скопируй вручную:", text);
+          }
+        });
+    </script>
+}

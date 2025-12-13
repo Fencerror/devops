@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Ссылка на опрос";
+    var publicId = (Guid)ViewData["PublicId"]!;
+    var baseUrl = $"{Context.Request.Scheme}://{Context.Request.Host}";
+    var voteUrl = $"{baseUrl}/p/{publicId}";
+    var resultsUrl = $"{baseUrl}/p/{publicId}/results";
+}
+
+<div class="page-center">
+    <div class="card narrow">
+        <div class="card-header">
+            <h2 class="card-title center-text">Готово</h2>
+            <p class="card-subtitle center-text">Скопируйте ссылку и отправьте тем, кто будет голосовать.</p>
+        </div>
+        <hr class="divider" />
+        <div class="card-body">
+            <div class="field">
+                <label>Ссылка на голосование</label>
+                <input class="input" id="voteLink" value="@voteUrl" readonly />
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-primary" type="button" id="copyVote">Копировать</button>
+                <a class="btn btn-ghost" href="@voteUrl">Открыть</a>
+            </div>
+
+            <div style="height:12px;"></div>
+
+            <div class="field">
+                <label>Ссылка на результаты</label>
+                <input class="input" value="@resultsUrl" readonly />
+            </div>
+
+            <div class="actions">
+                <a class="btn btn-ghost" asp-action="Index" asp-controller="Polls">Все опросы</a>
+                <a class="btn btn-ghost" href="@resultsUrl">Результаты</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("copyVote").addEventListener("click", async () => {
+            const input = document.getElementById("voteLink");
+            const text = input.value;
+            try {
+                await navigator.clipboard.writeText(text);
+                const btn = document.getElementById("copyVote");
+                const old = btn.textContent;
+                btn.textContent = "Скопировано";
+                setTimeout(() => btn.textContent = old, 900);
+            } catch {
+                input.select();
+                document.execCommand("copy");
+            }
+        });
+    </script>
+}

@@ -1,4 +1,4 @@
-@model DevOpsPollApp.Models.PollResultsViewModel
+@model DevOpsPollApp.ViewModels.PollResultsViewModel
 @{
     ViewData["Title"] = "Результаты";
 }
@@ -7,11 +7,11 @@
     <div class="card">
         <div class="card-header">
             <h2 class="card-title center-text">Результаты</h2>
-            <p class="card-subtitle center-text">@Model.Poll.Question</p>
+            <p class="card-subtitle center-text">@Model.Title</p>
         </div>
         <hr class="divider" />
         <div class="card-body">
-            <div class="center-text" style="color: rgba(255,255,255,.82); font-weight: 800;">
+            <div class="center-text" style="color: rgba(255,255,255,.82); font-weight: 900;">
                 Всего голосов: @Model.TotalVotes
             </div>
 
@@ -26,17 +26,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var option in Model.Poll.Options.OrderByDescending(o => o.Votes))
+                    @foreach (var row in Model.Rows)
                     {
-                        var percentage = Model.TotalVotes == 0 ? 0 : (int)Math.Round((double)option.Votes * 100 / Model.TotalVotes);
                         <tr>
-                            <td style="font-weight:900;">@option.Text</td>
-                            <td>@option.Votes</td>
+                            <td style="font-weight:900;">@row.OptionText</td>
+                            <td>@row.Votes</td>
                             <td style="min-width:260px;">
-                                <div class="progress" aria-label="@percentage%">
-                                    <div style="width:@percentage%"></div>
+                                <div class="progress" aria-label="@row.Percentage%">
+                                    <div style="width:@row.Percentage%"></div>
                                 </div>
-                                <div style="margin-top:6px; color: rgba(255,255,255,.78); font-size:13px;">@percentage %</div>
+                                <div style="margin-top:6px; color: rgba(255,255,255,.78); font-size:13px;">@row.Percentage %</div>
                             </td>
                         </tr>
                     }
@@ -44,8 +43,8 @@
             </table>
 
             <div class="actions" style="margin-top:14px;">
-                <a class="btn btn-primary" asp-action="Index" asp-controller="Polls">Назад к опросу</a>
-                <a class="btn btn-ghost" asp-controller="Home" asp-action="Index">Сменить имя</a>
+                <a class="btn btn-primary" href="/p/@Model.PublicId">Назад к опросу</a>
+                <a class="btn btn-ghost" asp-action="Index" asp-controller="Polls">Все опросы</a>
             </div>
         </div>
     </div>

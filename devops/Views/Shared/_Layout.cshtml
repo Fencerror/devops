@@ -5,23 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - DevOpsPoll</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
-
 </head>
 <body>
     <header class="app-header">
         <div class="container header-inner">
-            <a class="brand" asp-controller="Home" asp-action="Index">
+            <a class="brand" asp-controller="Polls" asp-action="Index">
                 <span class="logo"></span>
                 <span class="brand-text">
                     <span class="brand-title">DevOpsPoll</span>
-                    <span class="brand-subtitle">мини-опрос</span>
+                    <span class="brand-subtitle">опросы по ссылке</span>
                 </span>
             </a>
 
             <div class="header-actions">
-                <span class="user-pill" id="userBadge" style="display:none;"></span>
-                <a class="nav-link" asp-controller="Polls" asp-action="Results">Результаты</a>
+                <a class="nav-link" asp-controller="Polls" asp-action="Index">Опросы</a>
+                <a class="nav-link" asp-controller="Polls" asp-action="Create">Создать</a>
             </div>
         </div>
     </header>
@@ -36,12 +34,10 @@
         <div class="container footer-inner">
             <span>DevOpsPoll</span>
             <span class="dot">•</span>
-            <span id="footerUser" class="footer-user"></span>
+            <span>SQL Server • EF Core</span>
         </div>
     </footer>
-        
-    <script src="~/js/app.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
 
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

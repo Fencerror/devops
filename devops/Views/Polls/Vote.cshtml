@@ -1,0 +1,37 @@
+﻿@model DevOpsPollApp.ViewModels.PollVoteViewModel
+@{
+    ViewData["Title"] = "Голосование";
+}
+
+<div class="page-center">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title center-text">@Model.Title</h2>
+            <p class="card-subtitle center-text">Выберите вариант и отправьте голос.</p>
+        </div>
+        <hr class="divider" />
+        <div class="card-body">
+            <form method="post" action="/p/@Model.PublicId">
+                @Html.AntiForgeryToken()
+
+                <div class="stack">
+                    @foreach (var option in Model.Options)
+                    {
+                        <label class="option" for="opt-@option.Id">
+                            <input type="radio" id="opt-@option.Id" name="SelectedOptionId" value="@option.Id" />
+                            <div>
+                                <div class="option-title">@option.Text</div>
+                                <div class="option-meta">нажмите, чтобы выбрать</div>
+                            </div>
+                        </label>
+                    }
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" type="submit">Отправить голос</button>
+                    <a class="btn btn-ghost" href="/p/@Model.PublicId/results">Результаты</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

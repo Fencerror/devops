@@ -1,0 +1,40 @@
+﻿@model DevOpsPollApp.ViewModels.PollCreateViewModel
+@{
+    ViewData["Title"] = "Создать опрос";
+}
+
+<div class="page-center">
+    <div class="card narrow">
+        <div class="card-header">
+            <h2 class="card-title center-text">Создать опрос</h2>
+            <p class="card-subtitle center-text">Варианты — по одному на строку.</p>
+        </div>
+        <hr class="divider" />
+        <div class="card-body">
+            <form asp-action="Create" asp-controller="Polls" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="field">
+                    <label asp-for="Title">Название</label>
+                    <input class="input" asp-for="Title" />
+                    <span style="color: rgba(255,120,160,.95); font-size:13px;" asp-validation-for="Title"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="OptionsRaw">Варианты</label>
+                    <textarea class="input" asp-for="OptionsRaw" rows="6" style="resize:vertical;"></textarea>
+                    <span style="color: rgba(255,120,160,.95); font-size:13px;" asp-validation-for="OptionsRaw"></span>
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" type="submit">Создать</button>
+                    <a class="btn btn-ghost" asp-action="Index" asp-controller="Polls">Назад</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
