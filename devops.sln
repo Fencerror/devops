@@ -5,7 +5,12 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "devops", "devops\devops.csproj", "{0C351379-1956-48E3-B8CB-6406ECA54560}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsPollApp.Tests", "DevOpsPollApp.Tests\DevOpsPollApp.Tests.csproj", "{986CB407-7EFD-4C73-9081-3DE34E1F4146}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsPollApp.Tests", "DevOpsPollApp.Tests\DevOpsPollApp.Tests.csproj", "{986CB407-7EFD-4C73-9081-3DE34E1F4146}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4A956AB4-DEFE-406F-A470-DCBFE041CFDD}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
