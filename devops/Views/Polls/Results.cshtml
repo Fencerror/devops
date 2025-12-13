@@ -1,0 +1,52 @@
+@model DevOpsPollApp.Models.PollResultsViewModel
+@{
+    ViewData["Title"] = "Результаты";
+}
+
+<div class="page-center">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title center-text">Результаты</h2>
+            <p class="card-subtitle center-text">@Model.Poll.Question</p>
+        </div>
+        <hr class="divider" />
+        <div class="card-body">
+            <div class="center-text" style="color: rgba(255,255,255,.82); font-weight: 800;">
+                Всего голосов: @Model.TotalVotes
+            </div>
+
+            <div style="height: 14px;"></div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Вариант</th>
+                        <th>Голоса</th>
+                        <th>Доля</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var option in Model.Poll.Options.OrderByDescending(o => o.Votes))
+                    {
+                        var percentage = Model.TotalVotes == 0 ? 0 : (int)Math.Round((double)option.Votes * 100 / Model.TotalVotes);
+                        <tr>
+                            <td style="font-weight:900;">@option.Text</td>
+                            <td>@option.Votes</td>
+                            <td style="min-width:260px;">
+                                <div class="progress" aria-label="@percentage%">
+                                    <div style="width:@percentage%"></div>
+                                </div>
+                                <div style="margin-top:6px; color: rgba(255,255,255,.78); font-size:13px;">@percentage %</div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="actions" style="margin-top:14px;">
+                <a class="btn btn-primary" asp-action="Index" asp-controller="Polls">Назад к опросу</a>
+                <a class="btn btn-ghost" asp-controller="Home" asp-action="Index">Сменить имя</a>
+            </div>
+        </div>
+    </div>
+</div>

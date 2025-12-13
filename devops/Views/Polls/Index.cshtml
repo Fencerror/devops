@@ -1,0 +1,38 @@
+@model DevOpsPollApp.Models.PollVoteViewModel
+@{
+    ViewData["Title"] = "Опрос";
+}
+
+<div class="page-center">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title center-text">@Model.Poll.Question</h2>
+            <p class="card-subtitle center-text">Выберите один вариант и отправьте голос.</p>
+        </div>
+        <hr class="divider" />
+        <div class="card-body">
+            <form id="voteForm" asp-action="Vote" asp-controller="Polls" method="post">
+                <input type="hidden" id="hiddenUserName" name="UserName" value="@Model.UserName" />
+
+                <div class="stack">
+                    @foreach (var option in Model.Poll.Options)
+                    {
+                        <label class="option" for="option-@option.Id">
+                            <input type="radio" name="SelectedOptionId" id="option-@option.Id" value="@option.Id" />
+                            <div>
+                                <div class="option-title">@option.Text</div>
+                                <div class="option-meta">нажмите, чтобы выбрать</div>
+                            </div>
+                        </label>
+                    }
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" type="submit">Голосовать</button>
+                    <a class="btn btn-ghost" asp-action="Results" asp-controller="Polls">Результаты</a>
+                    <a class="btn btn-ghost" asp-controller="Home" asp-action="Index">Сменить имя</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

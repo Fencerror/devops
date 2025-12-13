@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<div class="page-center">
+    <div class="card narrow">
+        <div class="card-header">
+            <h2 class="card-title center-text">Вход</h2>
+            <p class="card-subtitle center-text">Введите имя, чтобы участвовать в опросе:</p>
+        </div>
+        <hr class="divider" />
+        <div class="card-body">
+            <form id="startForm" asp-controller="Polls" asp-action="Index" method="get">
+                <div class="field">
+                    <label for="userName">Ник</label>
+                    <input class="input" type="text" id="userName" name="userName" placeholder="например: ivanov42" autocomplete="nickname" />
+                </div>
+
+                <div class="actions">
+                    <button class="btn btn-primary" type="submit">Продолжить</button>
+                    <button class="btn btn-ghost" type="button" id="clearUser">Сбросить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
