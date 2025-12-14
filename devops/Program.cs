@@ -6,7 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("Default"),
+        o => o.EnableRetryOnFailure()
+    ));
+
 
 var app = builder.Build();
 
@@ -16,7 +20,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<DevOpsPollApp.Data.ApplicationDbContext>();
+    db.Database.Migrate();
+}
+
 app.UseStaticFiles();
 
 app.UseRouting();
