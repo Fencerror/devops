@@ -1,5 +1,6 @@
 using DevOpsPollApp.Data;
 using Microsoft.EntityFrameworkCore;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ using (var scope = app.Services.CreateScope())
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseHttpMetrics();
 
 app.UseAuthorization();
 
@@ -37,5 +39,7 @@ app.MapControllerRoute(
     pattern: "{controller=Polls}/{action=Index}/{id?}");
 
 app.MapGet("/health", () => Results.Ok("OK"));
+
+app.MapMetrics("/metrics");
 
 app.Run();
